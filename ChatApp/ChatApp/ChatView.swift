@@ -12,6 +12,10 @@ struct ChatView: View {
     @EnvironmentObject var viewModel: ChatsViewModel
     
     let chat: Chat
+    
+    @State private var text = ""
+    @FocusState private var isFocused
+    
     var body: some View {
         VStack(spacing: 0) {
             GeometryReader(content: { reader in
@@ -21,11 +25,49 @@ struct ChatView: View {
                 }
             })
             .background(Color.yellow)
+            
+            tollbarView()
         }
         .padding(.top, 1)
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             viewModel.markAsUnread(false, chat: chat)
+        }
+    }
+    
+    func tollbarView() -> some View {
+        VStack {
+            let height: CGFloat = 37
+            HStack {
+                TextField("Message ...", text: $text)
+                    .padding(.horizontal, 10)
+                    .frame(height: height)
+                    .clipShape(RoundedRectangle(cornerRadius: 13))
+                    .focused($isFocused)
+                
+                Button(action: {
+                    sendMessage()
+                }, label: {
+                    Image(systemName: "paperplane.fill")
+                        .foregroundColor(.white)
+                        .frame(width: height, height: height)
+                        .background(
+                            Circle()
+                                .foregroundColor(text.isEmpty ? .gray : .blue)
+                        )
+                })
+                .disabled(text.isEmpty)
+            }
+            .frame(height: height)
+        }
+        .padding(.vertical)
+        .padding(.horizontal)
+        .background(.thickMaterial)
+    }
+    
+    func sendMessage() {
+        if let message = viewModel.sendMessage(text, in: chat) {
+            text = ""
         }
     }
     
