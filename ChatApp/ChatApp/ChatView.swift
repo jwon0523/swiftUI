@@ -16,15 +16,29 @@ struct ChatView: View {
     @State private var text = ""
     @FocusState private var isFocused
     
+    @State private var messageIdToScroll: UUID?
+    
     var body: some View {
         VStack(spacing: 0) {
             GeometryReader(content: { reader in
                 ScrollView {
-                    getMessagesView(viewWidth: reader.size.width)
-                        .padding(.horizontal)
+                    ScrollViewReader { scrollReader in
+                        getMessagesView(viewWidth: reader.size.width)
+                            .padding(.horizontal)
+                            .onChange(of: messageIdToScroll) { _ in
+                                if let  messageId = messageIdToScroll {
+                                    scrollTo(messageID: messageId, shouldAnimate: true, scrollReader: scrollReader)
+                                }
+                            }
+                            .onAppear {
+                                if let messageID = chat.messages.last?.id {
+                                    scrollTo(messageID: messageID, anchor: .bottom, shouldAnimate: false, scrollReader: scrollReader)
+                                }
+                            }
+                    }
                 }
             })
-            .background(Color.yellow)
+            .padding(.bottom, 5)
             
             tollbarView()
         }
@@ -32,6 +46,14 @@ struct ChatView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             viewModel.markAsUnread(false, chat: chat)
+        }
+    }
+    
+    func scrollTo(messageID: UUID, anchor: UnitPoint? = nil, shouldAnimate: Bool, scrollReader: ScrollViewProxy) {
+        DispatchQueue.main.async {
+            withAnimation(shouldAnimate ? Animation.easeIn : nil) {
+                scrollReader.scrollTo(messageID, anchor: anchor)
+            }
         }
     }
     
@@ -68,6 +90,7 @@ struct ChatView: View {
     func sendMessage() {
         if let message = viewModel.sendMessage(text, in: chat) {
             text = ""
+            messageIdToScroll = message.id
         }
     }
     
@@ -99,4 +122,8 @@ struct ChatView: View {
 #Preview {
     ChatView(chat: Chat.sampleChat[0])
         .environmentObject(ChatsViewModel())
+}
+
+#Preview {
+    ContentView()
 }
