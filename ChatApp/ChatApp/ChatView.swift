@@ -44,8 +44,35 @@ struct ChatView: View {
         }
         .padding(.top, 1)
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarItems(leading: navBarLeadingBtn, trailing: navBarTrailingBtn)
         .onAppear {
             viewModel.markAsUnread(false, chat: chat)
+        }
+    }
+    
+    var navBarLeadingBtn: some View {
+        Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+            HStack {
+                Image(chat.person.imgString)
+                    .resizable()
+                    .frame(width: 40, height: 40)
+                    .clipShape(Circle())
+                
+                Text(chat.person.name).bold()
+            }
+            .foregroundColor(.black)
+        })
+    }
+    
+    var navBarTrailingBtn: some View {
+        HStack {
+            Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+                Image(systemName: "video")
+            })
+            
+            Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+                Image(systemName: "phone")
+            })
         }
     }
     
@@ -110,7 +137,7 @@ struct ChatView: View {
                     }
                     .frame(width: viewWidth * 0.7, alignment: isReceived ? .leading : .trailing)
                     .padding(.vertical)
-//                    .background(Color.blue)
+                    //                    .background(Color.blue)
                 }
                 .frame(maxWidth: .infinity, alignment: isReceived ? .leading : .trailing)
                 .id(message.id) // important for automatic scrolling later
@@ -120,8 +147,10 @@ struct ChatView: View {
 }
 
 #Preview {
-    ChatView(chat: Chat.sampleChat[0])
-        .environmentObject(ChatsViewModel())
+    NavigationView {
+        ChatView(chat: Chat.sampleChat[0])
+            .environmentObject(ChatsViewModel())
+    }
 }
 
 #Preview {
