@@ -47,17 +47,19 @@ extension Chat {
         Chat(
             person: Person(name: "Hakim", imgString: "img1"),
             messages: [
-                Message("Hey hakim", type: .Sent, date: Date(timeIntervalSinceNow: -86400 * 3)),
-                Message("I'm just developing", type: .Sent, date: Date(timeIntervalSinceNow: -86400 * 3)),
+                Message("Hey hakim", type: .Sent, date: Date(timeIntervalSince1970: 0)),
+                Message("I'm just developing", type: .Sent, date: Date(timeIntervalSinceNow: -86400 * 30)),
                 Message("Please I need your help🙂", type: .Sent, date: Date(timeIntervalSinceNow: -86400 * 2)),
                 Message("Sure how can I help youflo?", type: .Received, date: Date(timeIntervalSinceNow: -86400 * 2)),
                 Message("Maybe you send me mom \"good\" jokes", type: .Received, date: Date(timeIntervalSinceNow: -86400 * 2)),
-                Message("Sure I can do that. No problem.", type: .Sent, date: Date(timeIntervalSinceNow: -86400 * 1))
+                Message("Sure I can do that. No problem.", type: .Sent, date: Date(timeIntervalSinceNow: -86400 * 1)),
+                Message("Sure I can do that. No problem.", type: .Sent, date: Date(timeIntervalSinceNow: -86400 * 1)),
+                Message("Sure I can do that. No problem.", type: .Received, date: Date())
             ],
             hasUnreadMessage: true
         ),
         Chat(
-            person: Person(name: "JaeWon", imgString: "img2"),
+            person: Person(name: "JaeWon", imgString: "img3"),
             messages: [
                 Message("Hey Jaewon", type: .Sent, date: Date(timeIntervalSinceNow: -86400 * 10)),
                 Message("I'm just developing", type: .Sent, date: Date(timeIntervalSinceNow: -86400 * 3)),
@@ -69,7 +71,7 @@ extension Chat {
             hasUnreadMessage: true
         ),
         Chat(
-            person: Person(name: "Joon", imgString: "img3"),
+            person: Person(name: "Joon", imgString: "img2"),
             messages: [
                 Message("Hey Joon", type: .Sent, date: Date(timeIntervalSinceNow: -86400 * 5)),
                 Message("I'm just developing", type: .Sent, date: Date(timeIntervalSinceNow: -86400 * 5)),
