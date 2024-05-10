@@ -29,7 +29,7 @@ struct ContentView: View {
                                     Text(food.name!)
                                         .bold()
                                     
-                                    Text("\(Int(food.calories))") 
+                                    Text("\(Int(food.calories))")
                                     + Text(" calories")
                                         .foregroundStyle(.red)
                                 }
@@ -65,11 +65,21 @@ struct ContentView: View {
     }
     
     private func deleteFood(offsets: IndexSet) {
-        // pass
+        withAnimation {
+            offsets.map { food[$0] }.forEach(managedObjContext.delete)
+            
+            DataController().save(context: managedObjContext)
+        }
     }
     
     private func totalCaloriesToday() -> Double {
-        return 0.0
+        var caloriesToday: Double = 0
+        for item in food {
+            if Calendar.current.isDateInToday(item.date!) {
+                caloriesToday += item.calories
+            }
+        }
+        return caloriesToday
     }
 }
 
