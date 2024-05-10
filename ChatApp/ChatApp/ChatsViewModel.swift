@@ -27,7 +27,6 @@ class ChatsViewModel: ObservableObject {
         var res = [[Message]]()
         var tmp = [Message]()
         for message in chat.messages {
-            print(message.date)
             if let firstMessage = tmp.first {
                 let daysBetween = firstMessage.date.daysBetween(date: message.date)
                 if daysBetween >= 1 {
@@ -42,6 +41,7 @@ class ChatsViewModel: ObservableObject {
             }
         }
         res.append(tmp)
+        print(res)
         return res
     }
     
